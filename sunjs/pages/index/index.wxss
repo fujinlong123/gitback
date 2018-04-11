@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #c0c0c0;
+}
+
+.top {
+  flex-grow: 1;
+  height: 0rpx;
+  background: #fff;
+ 
+}
+
+.footer {
+  padding: 10rpx;
+  border-top: 1rpx solid #F2F2F2;
+  background: #fff;
+ 
+}
+
+
+
+.btn-group .price-label {
+  border: 2rpx solid #d7d7d7;
+  border-radius: 8rpx;
+  height: 86rpx;
+}
+
+
+
+

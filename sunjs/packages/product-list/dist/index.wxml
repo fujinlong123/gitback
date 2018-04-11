@@ -1,0 +1,8 @@
+<block wx:for="{{list}}" wx:key="item">
+  <goods-item id="goodsItem{{index}}" hidEdit="{{false}}" hidCounter="{{true}}" price="{{item.price}}" index="{{index}}" bind:counterChange="counterChange" bind:deleteTap="deleteTap" bind:editTap="editTap" name="{{item.name}}" num="{{item.num}}" code="{{item.code}}"></goods-item>
+</block>
+
+
+
+
+

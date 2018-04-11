@@ -1,0 +1,25 @@
+<import src="searchbar.wxml" />
+
+<view style='display:flex;flex-direction:column;height:100%'>
+
+
+  <view>
+    <template is="searchbar" data="{{inputShowed:inputShowed,inputVal:inputVal}}" />
+  </view>
+
+
+  <view style='flex-grow:1;height:0rpx;'>
+    <scroll-view scroll-y style='height:100%;'>
+      <product-list></product-list>
+    </scroll-view>
+  </view>
+ 
+  <view style='padding:10rpx'>
+    <button class="btn" bindtap='add' type="primary">添加商品</button>
+    <button class="btn" bindtap='add1' type="primary">添加条码秤商品</button>
+  </view>
+
+
+
+
+</view>

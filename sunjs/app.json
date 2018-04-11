@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/product/product",
+   
+    "pages/lanya/index",
+    "pages/setting/setting",
+    "pages/login/login",
+    "pages/logs/logs",
+    "pages/error/error",
+    "pages/addProduct/index",
+    "pages/addProduct1/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "超市便利店收银小程序",
+    "navigationBarTextStyle": "black"
+  }
+}
