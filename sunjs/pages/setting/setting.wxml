@@ -16,7 +16,7 @@
     <!-- center right  -->
     <view style="flex-grow:1;line-height:110rpx">
 
-      <text style='padding-left:10rpx'>老司机的店</text>
+      <text style='padding-left:10rpx'>{{storeName}}</text>
       <!-- desc  -->
 
 
@@ -51,33 +51,6 @@
 
 <view class='weui-cells__title'></view>
 
-<view class='weui-cells'>
-  <view class='weui-cell weui-cell_access'>
-    <view class="weui-cell__bd ">邀请收银员</view>
-    <view class='weui-cell__ft'></view>
-  </view>
-</view>
-
-<view class='weui-cells__title'></view>
-
-<view class='weui-cells'>
-  <view class='weui-cell weui-cell_access'>
-    <view class="weui-cell__bd ">支付设置</view>
-    <view class='weui-cell__ft'></view>
-  </view>
-</view>
-
-<view class='weui-cells__title'></view>
-
-<view class='weui-cells'>
-  <view class='weui-cell weui-cell_access'>
-    <view class="weui-cell__bd "><navigator url="/pages/lanya/index"   >蓝牙打印机</navigator> </view>
-    <view class='weui-cell__ft'></view>
-  </view>
-</view>
-
-
-<view class='weui-cells__title'></view>
 
 <view class='weui-cells'>
   <view class='weui-cell weui-cell_access'>

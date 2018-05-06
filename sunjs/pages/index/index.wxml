@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="main">
   <view class='top'>
-    <view class="weui-tab" >
+    <view class="weui-tab">
       <view class="weui-navbar">
         <block wx:for="{{tabs}}" wx:key="*this">
           <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
@@ -11,13 +11,13 @@
         <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
       </view>
 
-      <scroll-view scroll-y class="weui-tab__panel"  scroll-top="{{scrollTop}}">
-        <view class="weui-tab__content" hidden="{{activeIndex != 0}}" >
-            <view style='line-height:2;font-size:24rpx;padding:10rpx;border-bottom:1px solid #f2f2f2;'>收银单号：12121312312312211</view>
-            <goods-list id="goodsListComp"></goods-list>
-     
+      <scroll-view scroll-y class="weui-tab__panel" scroll-top="{{scrollTop}}">
+        <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+          <view style='line-height:2;font-size:24rpx;padding:10rpx;border-bottom:1px solid #f2f2f2;'>收银单号：12121312312312211</view>
+          <goods-list id="goodsListComp" bind:goodsListChange="goodsListChange"></goods-list>
+
         </view>
-        <view class="weui-tab__content" hidden="{{activeIndex != 1}}">选项二的内容</view>
+        <view class="weui-tab__content" hidden="{{activeIndex != 1}}"></view>
         <view class="weui-tab__content" hidden="{{activeIndex != 2}}">选项三的内容</view>
 
       </scroll-view>
@@ -32,19 +32,30 @@
 
     <view style='vertical-align:bottom;margin-bottom:0rpx;'>
       <view class="btn-group">
+        <button bindtap="setting" class="btn" style='width:100rpx'>
+          <wxc-icon size="48" type="home"></wxc-icon>
+        </button>
         <view class="price-label flex-grow-1">
-
+          <view style="flex-grow:1;text-align:right;padding-right:15rpx;height:0rpx">
+            <text><text style="font-weight:700">总计：</text>
+            <text style="color:red">￥{{sumPrice}}</text></text>
+          </view>
+          <view style="text-align:right;color:#999;font-size:24rpx;padding-right:15rpx;">共{{goodsCount}}件</view>
         </view>
         <button type='primary' class="btn width-200" style='background:#FF6600;'>结算</button>
       </view>
       <view class="btn-group">
-        <input type='digit' class="input flex-grow-1" placeholder='输入金额无码收银' placeholder-style='font-size:36rpx'></input>
+        <button class="btn" style='width:100rpx'>
+          <wxc-icon size="48" type="search"></wxc-icon>
+        </button>
+        <view class="flex-grow-1" style="width:0rpx;">
+          <input type='digit' class="input " placeholder='输入金额无码收银' placeholder-style='font-size:36rpx'></input>
+        </view>
         <button type='primary' class="btn width-200" style='background-color:#009966;'>确定</button>
       </view>
 
       <view class="btn-group">
-        <button type='primary' bindtap="setting" class="btn width-200" style='background:#333333'>设置</button>
-        <button type='primary' bindtap='bindViewTap' class="btn flex-grow-1">扫码条形码</button>
+        <button type='primary' bindtap='bindViewTap' class="btn flex-grow-1">扫描条形码</button>
       </view>
     </view>
   </view>

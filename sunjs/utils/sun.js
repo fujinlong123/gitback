@@ -1,4 +1,5 @@
 const config = require("config.js")
+const wxPromisify = require("wxPromisify.js")
 const data = {};
 const sun = {};
 
@@ -7,7 +8,8 @@ sun.getSessionId = function () {
   if (data.sessionId) {
     return data.sessionId;
   } else {
-    return wx.getStorageSync("sessionId");
+    data.sessionId = wx.getStorageSync("sessionId");
+    return data.sessionId;
   }
 }
 
@@ -38,7 +40,7 @@ sun._loginSuccess = function (callback) {
 }
 
 sun.login = function (options) {
-  var options = options||{};
+  var options = options || {};
   wx.login({
     success: res => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -48,7 +50,7 @@ sun.login = function (options) {
           url: config.baseServerUrl() + "/weixin/onLogin",
           data: {
             code: res.code,
-            sessionId:sun.getSessionId()
+            sessionId: sun.getSessionId()
           },
           success: function (res) {
             if (res.data) {
@@ -74,6 +76,20 @@ sun.login = function (options) {
   })
 }
 
+
+sun.loadSessionData = wxPromisify(function (options) {
+  sun.request({
+    url: "loadSessionData"
+  }).then(function (result) {
+    var sessionId = sun.getSessionId();
+    var sessionData = {};
+    sessionData[sessionId] = result.data;
+    wx.setStorageSync("sessionData", sessionData);
+    options.success(result);
+  }).catch(function (result) {
+    options.fail(result);
+  });
+});
 
 
 
@@ -111,60 +127,89 @@ sun.reportUserInfo = function () {
 };
 
 
+
+
+
+
+
+var request = wxPromisify(wx.request);
+
+
+
+
+
 //封装wx.request 使得每次请求参数都会带上sessionId
-sun.request = function (options) {
-  var data = options.data || {};
-  if (options.url){
-    if(options.url.indexOf("http")!=0){
+sun.request = wxPromisify(function (options) {
+  options.data = options.data || {};
+  options.data.sessionId = sun.getSessionId();
+  if (options.url) {
+    if (options.url.indexOf("http") != 0) {
       options.url = config.baseServerUrl() + "/" + options.url;
     }
   }
-
   var method = options.method || "GET";
-  data.sessionId = sun.getSessionId();
-  wx.request({
-    method, method,
-    url: options.url,
-    data: data,
-    success: function (res) {
+  var success = options.success;
+  var fail = options.fail;
 
-      if (res.data) {
-        var data = res.data;
-        if (data.ret == "success") {
-         
-        } else if (data.ret == "fail") {
-          if (data.code == "noLogin") {//未登录，重新发起登录，并重新请求
-            sun.login({success:function(){
+  request(options).then(function (res) {
+    if (res.data && res.statusCode == 200) {
+      var result = res.data;
+      if (result.ret == "success") {
+        success(result);
+      } else if (result.ret == "fail") {
+        if (result.code == "noLogin") {//未登录，重新发起登录，并重新请求
+          sun.login({
+            success: function () {
               sun.request(options);
-            }});
-          }
+            }
+          });
         } else {
-
+          fail(result);
         }
       }
-
-      if (typeof options.success === 'function') {
-        options.success(res);
-      }
-    },
-    fail: function (res) {
-      if (typeof options.fail === 'function') {
-        options.fail(res);
-      }
-    },
-    complete(res) {
-      if (typeof options.complete === 'function') {
-        options.complete(res);
-      }
+    } else {
+      console.log("调用接口失败,http状态码不对：", res);
+      wx.showToast({
+        title: '网络异常:' + res.statusCode,
+      });
+      fail();
     }
+
+  }).catch(function (res) {
+  
+    console.log("调用接口失败：", res);
+    wx.showToast({
+      title: '网络异常',
+    });
+    fail();
+  });
+
+});
+
+
+
+
+sun.simpleShowToast = function (msg) {
+  wx.showToast({
+    title: msg
   })
 }
 
+sun.getStoreId = function () {
+  return sun.getSessionData().storeId;
+}
 
+sun.getStoreName = function () {
+  return sun.getSessionData().storeName;
+}
 
-
-
-
+sun.getSessionData = function (options) {
+  var sessionId = sun.getSessionId();
+  if (!data.sessionData) {
+    data.sessionData = wx.getStorageSync("sessionData");
+  }
+  return data.sessionData[sessionId];
+}
 
 
 
